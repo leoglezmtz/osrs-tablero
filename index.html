@@ -408,7 +408,51 @@ section { padding-top: 62px; }
 .q {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: 11.5px; padding: 5px 9px; border: 1px solid var(--line); white-space: nowrap;
+  background: none; color: inherit; text-align: left;
 }
+/* Un chip que ademas es boton: se toca y abre su guia. */
+button.q { cursor: pointer; }
+button.q::after { content: " \25B8"; opacity: .75; }
+button.q:hover { border-color: var(--gold); color: var(--gold); }
+button.q:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+
+/* ---------- rutas de viaje ---------- */
+
+.rutas { display: flex; flex-direction: column; gap: 10px; }
+.ruta {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: inset 1px 1px 0 var(--bevel-hi), inset -1px -1px 0 var(--bevel-lo), var(--shadow);
+  padding: 18px;
+}
+.ruta h4 {
+  margin: 0 0 4px; font-family: "Cinzel", Georgia, serif; font-weight: 700; font-size: 18px;
+}
+.ruta > p { margin: 0 0 12px; font-size: 14.5px; color: var(--ink-2); }
+.pasos { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
+.pasos li {
+  display: grid; grid-template-columns: 26px 1fr; gap: 12px; align-items: start;
+  padding: 9px 0; border-top: 1px solid var(--line-soft); font-size: 14.5px;
+}
+.pasos li:first-child { border-top: 0; }
+.pasos b {
+  font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--gold);
+  border: 1px solid var(--gold); text-align: center; line-height: 1.55; text-shadow: var(--tsh);
+}
+.pasos code {
+  font-family: "IBM Plex Mono", monospace; font-size: 13px;
+  background: var(--sunken); border: 1px solid var(--bevel-lo);
+  padding: 1px 6px; color: var(--gold-bright);
+}
+.tienes { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 8px; margin-top: 4px; }
+.tiene {
+  background: var(--surface); border: 1px solid var(--line);
+  border-left: 4px solid var(--green);
+  box-shadow: inset 1px 1px 0 var(--bevel-hi), inset -1px -1px 0 var(--bevel-lo);
+  padding: 12px 14px;
+}
+.tiene b { display: block; font-size: 14px; margin-bottom: 3px; }
+.tiene span { font-size: 13px; color: var(--ink-2); }
 .q.done { color: var(--ink-3); background: var(--sunken); border-color: var(--line-soft); }
 .q.done::before { content: "\2713 "; color: var(--green); font-weight: 700; }
 .q.todo { color: var(--red); background: var(--red-wash); border-color: var(--red); }
@@ -498,6 +542,12 @@ td.note { color: var(--ink-2); font-size: 14px; }
 }
 .t:hover { color: var(--gold-bright); border-bottom-style: solid; }
 .t:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+
+/* Un chip que tambien abre guia usa el mismo mecanismo que un termino, pero
+   conserva su forma de chip: sin subrayado punteado. */
+button.q.t { border: 1px solid currentColor; padding: 5px 9px; }
+button.q.todo.t { color: var(--red); }
+button.q.todo.t:hover { color: var(--gold-bright); }
 
 #pop {
   position: fixed; z-index: 60; max-width: 340px;
@@ -720,6 +770,54 @@ footer p { margin: 0 0 7px; }
 
 <section>
   <div class="head">
+    <p class="eyebrow">Cómo llego</p>
+    <h2>Tu 99 de Construction es una red de transporte</h2>
+    <p>Y probablemente no la estás usando. Esto es lo que ya tienes desbloqueado según tus propios datos, más la ruta concreta a donde tienes que ir hoy.</p>
+  </div>
+
+  <div class="rutas">
+    <div class="ruta">
+      <h4>La jugada grande: tu casa como centro de teletransporte</h4>
+      <p>Tu <button class="t" data-t="conscape">capa de Construction</button> te teletransporta a tu <button class="t" data-t="poh">casa</button> <strong>ilimitadamente</strong>, y en el jardín de tu casa puedes construir un <button class="t" data-t="fairyrings">fairy ring</button>. Pide Construction 85 y tienes 99. Eso convierte tu casa en un punto desde el cual llegas a casi cualquier lado en dos toques.</p>
+      <ol class="pasos">
+        <li><b>1</b><span>Si aún no lo tienes, construye el fairy ring en el <button class="t" data-t="jardin">Superior Garden</button> de tu casa. Necesitas una regadera con agua. Con 99 de Construction es lo más barato que vas a hacer en tu vida.</span></li>
+        <li><b>2</b><span>De ahí en adelante: te pones la capa, click derecho, <em>Tele to POH</em>, y ya estás en el anillo.</span></li>
+      </ol>
+    </div>
+
+    <div class="ruta">
+      <h4>Ruta a Shilo Village — para empezar One Small Favour hoy</h4>
+      <p>Ahí vive <button class="t" data-t="yanni">Yanni Salika</button>, que es quien te da la quest.</p>
+      <ol class="pasos">
+        <li><b>A</b><span><strong>Si ya tienes el anillo en casa:</strong> capa de Construction → <em>Tele to POH</em> → fairy ring → código <code>C K R</code> → caminas al sur. Ese anillo está al sur de Tai Bwo Wannai, cerquita de Shilo Village.</span></li>
+        <li><b>B</b><span><strong>Si aún no lo construyes:</strong> busca cualquier fairy ring del mapa y usa el mismo código <code>C K R</code>. Ya puedes usarlos: tienes Fairytale I y II terminadas.</span></li>
+        <li><b>C</b><span><strong>Sin anillos:</strong> barco a Brimhaven desde Port Sarim, y de ahí la carreta a Shilo Village.</span></li>
+      </ol>
+    </div>
+
+    <div class="ruta">
+      <h4>Antes de salir, lleva esto</h4>
+      <p>One Small Favour te va a mandar por medio mapa. Con esto en la mochila te ahorras viajes de regreso.</p>
+      <ol class="pasos">
+        <li><b>1</b><span>Un <button class="t" data-t="pico">pickaxe</button> cualquiera.</span></li>
+        <li><b>2</b><span>Un <button class="t" data-t="cincel">chisel</button>.</span></li>
+        <li><b>3</b><span>Forma de llegar a <button class="t" data-t="portsarim">Port Sarim</button>, porque vas a acabar ahí.</span></li>
+        <li><b>4</b><span>Prende el plugin <button class="t" data-t="questhelper">Quest Helper</button> y selecciona la quest. Para esta en particular, que es pura vuelta, hace toda la diferencia.</span></li>
+      </ol>
+    </div>
+  </div>
+
+  <p class="qlabel" style="margin-top:26px">Transporte que ya desbloqueaste y quizá no usas</p>
+  <div class="tienes">
+    <div class="tiene"><b>Fairy rings</b><span>Fairytale I y II terminadas. Red de anillos por todo el mundo con códigos de tres letras.</span></div>
+    <div class="tiene"><b>Gnome gliders</b><span>The Grand Tree terminada. Vuelos rápidos entre puntos lejanos, incluido Karamja.</span></div>
+    <div class="tiene"><b>Spirit trees</b><span>Tree Gnome Village terminada. Red de árboles con teletransporte instantáneo.</span></div>
+    <div class="tiene"><b>Hechizos lunares</b><span>Lunar Diplomacy terminada. Un libro de hechizos completo con teletransportes propios.</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="head">
     <p class="eyebrow">La ruta</p>
     <h2>Cinco fases</h2>
     <p>Los tiempos asumen 8 horas por semana. Van en orden porque cada una habilita la siguiente.</p>
@@ -737,11 +835,11 @@ footer p { margin: 0 0 7px; }
         </div>
         <span class="pill ready">Sin XP pendiente</span>
       </div>
-      <p class="qlabel">Quests · faltan 3, y van en este orden</p>
+      <p class="qlabel">Quests · faltan 3, y van en este orden · tócalas</p>
       <div class="qlist">
-        <span class="q todo">1 · One Small Favour</span>
-        <span class="q todo">2 · King's Ransom</span>
-        <span class="q todo">3 · Knight Waves Training Grounds</span>
+        <button class="q todo t" data-t="osf" type="button">1 · One Small Favour</button>
+        <button class="q todo t" data-t="kingsransom" type="button">2 · King's Ransom</button>
+        <button class="q todo t" data-t="knightwaves" type="button">3 · Knight Waves</button>
       </div>
       <div class="flag"><strong>Hay un escalón escondido.</strong> Ninguna guía de Piety menciona <button class="t" data-t="osf">One Small Favour</button>, pero King's Ransom la exige. Lo verifiqué en el código de Quest Helper, no de memoria. Es la parte larga de las tres — y la buena noticia es que sus propios requisitos (Druidic Ritual, Rune Mysteries, Shilo Village) ya los tienes, así que puedes empezarla ahora mismo.</div>
       <p class="why">Tienes 87 Prayer y 70 Defence: en niveles Piety ya es tuya, no hace falta un solo punto de XP. Es el mayor salto de daño gratis de toda la cuenta.</p>
@@ -1099,9 +1197,17 @@ const TERMS = {
   defence: ["Defence", "Qué tan difícil es que te peguen, y qué equipo puedes usar. Muchas armaduras buenas piden Defence alto."],
   piety: ["Piety", "El rezo grande del mid-game: mientras lo tienes encendido, +23% Strength, +20% Attack y +25% Defence. Pide Prayer 70 y Defence 70 (ya los tienes) más dos quests. No cuesta XP: es dinero en la banca sin cobrar."],
   qp: ["Quest points", "Puntos que te da cada quest al completarla. Algunas cosas grandes piden un total mínimo — Dragon Slayer II pide 200 — y eso no se puede apurar entrenando: hay que hacer quests."],
-  kingsransom: ["King's Ransom", "Quest en la que rescatas al rey Arturo. Su premio es el acceso al entrenamiento de abajo. Exige haber terminado One Small Favour antes."],
-  osf: ["One Small Favour", "Una cadena de favores: cada personaje al que ayudas te manda con otro. Tiene fama de larga y de dar vueltas por medio mapa, pero no es dificil y no pide combate. Es el requisito escondido de King's Ransom, o sea el primer escalon real hacia Piety."],
-  knightwaves: ["Knight Waves Training Grounds", "Una mini-arena bajo Camelot donde peleas contra ocho caballeros de la mesa redonda, uno por uno. Ganar es lo que te entrega Piety. Es una miniquest: no da quest points."],
+  kingsransom: ["King's Ransom", "EMPIEZA: habla con Sir Kay en el castillo de Camelot, al norte de Seers' Village. QUE ES: rescatas al rey Arturo. EXIGE: One Small Favour (la que te falta), mas Black Knights' Fortress, Holy Grail y Murder Mystery, que ya tienes. Pide Defence 65 y Magic 45; tienes 70 en ambos. PREMIO: acceso al entrenamiento de los caballeros, que es donde se consigue Piety."],
+  osf: ["One Small Favour", "EMPIEZA: habla con Yanni Salika en Shilo Village, en su tienda de antiguedades al norte del rio. COMO LLEGAR: fairy ring codigo CKR y caminas al sur. LLEVA: pickaxe, chisel, y forma de llegar a Port Sarim. QUE ES: una cadena de favores donde cada persona a la que ayudas te manda con otra. Larga y famosa por dar vueltas, pero no es dificil y no pide combate. Cumples todos sus requisitos: Agility 36, Crafting 25, Herblore 18 y Smithing 30, mas Rune Mysteries, Shilo Village, Jungle Potion y Druidic Ritual."],
+  conscape: ["Capa de Construction", "Tu capa de 99. Ademas de dar +9 a defensas, te teletransporta a tu casa las veces que quieras, sin limite ni costo. Click derecho sobre ella, opcion 'Tele to POH'. Es la pieza que vuelve util todo lo demas."],
+  poh: ["POH", "Player-Owned House, tu casa. Es un espacio propio que amueblas con Construction, y en el que puedes meter cosas utiles: altares, un cofre de joyeria, arboles espiritu y anillos de hadas."],
+  jardin: ["Superior Garden", "El jardin grande de tu casa. Ahi se construyen las estructuras de transporte: arbol espiritu (Construction 75), obelisco (80) y fairy ring (85). Tienes 99, asi que los tres estan a tu alcance."],
+  yanni: ["Yanni Salika", "El comerciante de antiguedades de Shilo Village, al norte del rio. Es quien te da One Small Favour."],
+  pico: ["Pickaxe", "El pico de mineria. En One Small Favour lo necesitas para picar piedra en un punto de la cadena."],
+  cincel: ["Chisel", "El cincel, herramienta de Crafting. Sirve para cortar gemas, que es una de las cosas que te van a pedir."],
+  portsarim: ["Port Sarim", "Puerto al sur de Falador. Es de donde salen los barcos a Karamja, y acabas ahi durante One Small Favour."],
+  questhelper: ["Quest Helper", "Un plugin de RuneLite que ya tienes instalado. Seleccionas una quest en su panel y te marca en el mapa y en pantalla exactamente a donde ir y que hacer en cada paso. Para quests largas y enredadas como One Small Favour es la diferencia entre una hora y tres."],
+  knightwaves: ["Knight Waves Training Grounds", "EMPIEZA: bajo el castillo de Camelot, y solo se abre al terminar King's Ransom. QUE ES: peleas uno por uno contra ocho caballeros de la mesa redonda; cada uno usa un estilo distinto, asi que conviene rezar contra el estilo correcto en cada pelea. Al vencer a los ocho se desbloquea Piety. Es una miniquest: no da quest points, por eso no aparece en tu contador de 148."],
   slayer: ["Slayer", "La habilidad de matar por encargo. Un maestro te asigna un monstruo y una cantidad; al terminar te da puntos y otra tarea. Muchos monstruos valiosos solo se pueden matar si los traes de tarea."],
   agility: ["Agility", "Habilidad de correr obstáculos. Sube tu energía para correr y abre atajos por todo el mapa. Es famosa por ser lenta y aburrida, y por aparecer como requisito en todas partes."],
   herblore: ["Herblore", "Fabricar pociones con hierbas. Es lo que decide si el PvM te cuesta dinero o te lo genera, porque las pociones buenas son caras de comprar."],
