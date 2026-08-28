@@ -433,6 +433,24 @@ button.q:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 
   background: var(--sunken); border: 1px solid var(--bevel-lo);
   padding: 1px 6px; color: var(--gold-bright);
 }
+.codigos { display: flex; flex-direction: column; gap: 0; }
+.cod {
+  display: grid; grid-template-columns: 78px 1fr; gap: 13px; align-items: baseline;
+  padding: 10px 0; border-top: 1px solid var(--line-soft); font-size: 14px; color: var(--ink-2);
+}
+.cod:first-child { border-top: 0; }
+.cod code {
+  font-family: "IBM Plex Mono", monospace; font-size: 13.5px; font-weight: 600;
+  letter-spacing: .1em; text-align: center;
+  background: var(--sunken); border: 1px solid var(--bevel-lo);
+  padding: 4px 0; color: var(--gold-bright); text-shadow: var(--tsh);
+}
+.cod b { color: var(--ink); }
+@media (max-width: 700px) {
+  .cod { grid-template-columns: 1fr; gap: 5px; }
+  .cod code { justify-self: start; padding: 4px 12px; }
+}
+
 .tienes { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 8px; margin-top: 4px; }
 .tiene {
   background: var(--surface); border: 1px solid var(--line);
@@ -735,22 +753,26 @@ footer p { margin: 0 0 7px; }
   <div class="rutas">
     <div class="ruta">
       <h4>Ruta a Shilo Village — para empezar One Small Favour hoy</h4>
-      <p>Ahí vive <button class="t" data-t="yanni">Yanni Salika</button>, que es quien te da la quest. Tu <button class="t" data-t="conscape">capa de Construction</button> no solo va a tu casa: también teletransporta a los portales públicos, y hay uno en <button class="t" data-t="brimhaven">Brimhaven</button>.</p>
+      <p>Ahí vive <button class="t" data-t="yanni">Yanni Salika</button>, que es quien te da la quest. Tienes <button class="t" data-t="fairyrings">fairy ring</button> en casa, así que son dos pasos.</p>
       <ol class="pasos">
-        <li><b>1</b><span>Click derecho en la capa de Construction, y en vez de tu casa elige el portal de <strong>Brimhaven</strong>.</span></li>
-        <li><b>2</b><span>Sales del portal y caminas al norte, hacia los muelles.</span></li>
-        <li><b>3</b><span>Justo al sur de los muelles está <button class="t" data-t="hajedy">Hajedy</button>, el de la carreta. Le pagas unos <code>200 gp</code> y te lleva directo a Shilo Village.</span></li>
+        <li><b>1</b><span>Click derecho en tu <button class="t" data-t="conscape">capa de Construction</button> → <em>Tele to POH</em>. Es ilimitado y gratis.</span></li>
+        <li><b>2</b><span>Vas al anillo del jardín y tecleas <code>C K R</code>. Sales al sur de Tai Bwo Wannai, a un paseo corto de Shilo Village.</span></li>
       </ol>
+      <div class="flag" style="margin-top:12px">Si algún día el anillo no te sirve: tu capa también teletransporta a los <strong>portales públicos</strong>, y hay uno en <button class="t" data-t="brimhaven">Brimhaven</button>. De ahí, al sur de los muelles está <button class="t" data-t="hajedy">Hajedy</button> con su carreta a Shilo Village por unos <code>200 gp</code>.</div>
     </div>
 
     <div class="ruta">
-      <h4>Lo único que le falta a tu casa</h4>
-      <p>Tienes casi todo menos la pieza que más te serviría de aquí en adelante: un <button class="t" data-t="fairyrings">fairy ring</button> en el <button class="t" data-t="jardin">Superior Garden</button>.</p>
-      <ol class="pasos">
-        <li><b>1</b><span>Pide Construction 85 y tienes <strong>99</strong>. Solo necesitas una regadera con agua.</span></li>
-        <li><b>2</b><span>Ya puedes usar los anillos: tienes Fairytale I y II terminadas. Es la red de transporte más amplia del juego, con códigos de tres letras.</span></li>
-        <li><b>3</b><span>Con él, la ruta de arriba se vuelve: capa → casa → anillo → <code>C K R</code>, y apareces al sur de Tai Bwo Wannai, a un paso de Shilo Village.</span></li>
-      </ol>
+      <h4>Los códigos que te sirven para tu ruta</h4>
+      <p>Tu anillo de casa te conecta a toda la red. Estos son los destinos que aparecen en tus próximas fases, no una lista genérica.</p>
+      <div class="codigos">
+        <div class="cod"><code>C K R</code><span><b>Shilo Village</b> — One Small Favour, hoy mismo</span></div>
+        <div class="cod"><code>D L S</code><span><b>Escondite de los Myreque</b> — es literalmente donde pasan <em>In Search of</em> e <em>In Aid of the Myreque</em>, dos de las cuatro que te faltan para el Sepulchre</span></div>
+        <div class="cod"><code>C K S</code><span><b>Canifis</b> — la puerta a Morytania, donde vive toda la cadena de vampiros</span></div>
+        <div class="cod"><code>B K R</code><span><b>Mort Myre Swamp</b> — el pantano al sur de Canifis</span></div>
+        <div class="cod"><code>D L Q</code><span><b>Norte de Nardah</b> — el desierto, para la fase de Tombs of Amascut</span></div>
+        <div class="cod"><code>A K P</code><span><b>Necropolis</b> — la otra entrada al desierto</span></div>
+        <div class="cod"><code>B K S</code><span><b>Zanaris</b> — la ciudad de las hadas, el centro de la red</span></div>
+      </div>
     </div>
 
     <div class="ruta">
@@ -1159,6 +1181,8 @@ const TERMS = {
   qp: ["Quest points", "Puntos que te da cada quest al completarla. Algunas cosas grandes piden un total mínimo — Dragon Slayer II pide 200 — y eso no se puede apurar entrenando: hay que hacer quests."],
   kingsransom: ["King's Ransom", "EMPIEZA: habla con Sir Kay en el castillo de Camelot, al norte de Seers' Village. QUE ES: rescatas al rey Arturo. EXIGE: One Small Favour (la que te falta), mas Black Knights' Fortress, Holy Grail y Murder Mystery, que ya tienes. Pide Defence 65 y Magic 45; tienes 70 en ambos. PREMIO: acceso al entrenamiento de los caballeros, que es donde se consigue Piety."],
   osf: ["One Small Favour", "EMPIEZA: habla con Yanni Salika en Shilo Village, en su tienda de antiguedades al norte del rio. COMO LLEGAR: fairy ring codigo CKR y caminas al sur. LLEVA: pickaxe, chisel, y forma de llegar a Port Sarim. QUE ES: una cadena de favores donde cada persona a la que ayudas te manda con otra. Larga y famosa por dar vueltas, pero no es dificil y no pide combate. Cumples todos sus requisitos: Agility 36, Crafting 25, Herblore 18 y Smithing 30, mas Rune Mysteries, Shilo Village, Jungle Potion y Druidic Ritual."],
+  zanaris: ["Zanaris", "La ciudad oculta de las hadas. Es el centro de la red de fairy rings: desde ahi se llega a cualquier otro anillo, y tiene banco, tienda y un mercado propio."],
+  canifis: ["Canifis", "Pueblo de hombres lobo al este de Morytania. Es la puerta de entrada a toda esa region, y de ahi arranca la cadena de quests de vampiros que te falta para el Hallowed Sepulchre."],
   nexus: ["Portal Nexus", "Un pedestal en tu casa que guarda varios teletransportes de ciudad y los usa sin gastar runas de tu mochila. El tuyo tiene ocho: Varrock, Grand Exchange, Falador, Ardougne, Camelot, Draynor Manor, Lumbridge y Kourend Castle."],
   joyero: ["Ornate Jewellery Box", "La version mas completa del cofre de joyeria de casa. Reune los teletransportes de seis joyas distintas y los deja usar sin limite y sin gastarlas: ring of dueling, games necklace, combat bracelet, skills necklace, ring of wealth y amulet of glory. Son mas de veinte destinos gratis, y ya lo tienes construido."],
   brimhaven: ["Brimhaven", "Puerto en el noroeste de Karamja. Tiene uno de los portales publicos de casa, y de ahi sale la carreta a Shilo Village."],
