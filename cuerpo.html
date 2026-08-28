@@ -1,0 +1,1027 @@
+<title>Tablero de Vorkath</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+:root {
+  --ground:      #E6EAE8;
+  --surface:     #F6F8F7;
+  --surface-2:   #DDE3E0;
+  --line:        #C6CEC9;
+  --line-soft:   #D6DCD8;
+  --ink:         #171C1A;
+  --ink-2:       #414A46;
+  --ink-3:       #6B756F;
+
+  --bronze:      #85601F;
+  --bronze-ink:  #6A4C17;
+  --bronze-wash: #EFE6D2;
+
+  --rust:        #9C4632;
+  --rust-wash:   #F2DED8;
+  --moss:        #47702F;
+  --moss-wash:   #DFEAD4;
+
+  --track:       #CCD4CF;
+  --shadow:      0 1px 2px rgba(23,28,26,.06), 0 8px 24px rgba(23,28,26,.05);
+  --radius:      3px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:      #111615;
+    --surface:     #191F1D;
+    --surface-2:   #212927;
+    --line:        #303A37;
+    --line-soft:   #262F2C;
+    --ink:         #E4EAE7;
+    --ink-2:       #A9B4AF;
+    --ink-3:       #7C8783;
+
+    --bronze:      #D2A253;
+    --bronze-ink:  #E5BC74;
+    --bronze-wash: #2A2418;
+
+    --rust:        #D5806A;
+    --rust-wash:   #2C1E1A;
+    --moss:        #8DB973;
+    --moss-wash:   #1D2718;
+
+    --track:       #2A3330;
+    --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.28);
+  }
+}
+
+:root[data-theme="dark"] {
+  --ground:      #111615;
+  --surface:     #191F1D;
+  --surface-2:   #212927;
+  --line:        #303A37;
+  --line-soft:   #262F2C;
+  --ink:         #E4EAE7;
+  --ink-2:       #A9B4AF;
+  --ink-3:       #7C8783;
+
+  --bronze:      #D2A253;
+  --bronze-ink:  #E5BC74;
+  --bronze-wash: #2A2418;
+
+  --rust:        #D5806A;
+  --rust-wash:   #2C1E1A;
+  --moss:        #8DB973;
+  --moss-wash:   #1D2718;
+
+  --track:       #2A3330;
+  --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.28);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px 96px;
+}
+
+/* ---------- tipografía ---------- */
+
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+
+.eyebrow {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.num { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+
+/* ---------- encabezado ---------- */
+
+header {
+  padding: 72px 0 40px;
+  border-bottom: 1px solid var(--line);
+}
+
+h1 {
+  font-family: "Archivo Black", ui-sans-serif, sans-serif;
+  font-size: clamp(38px, 8vw, 68px);
+  line-height: .95;
+  letter-spacing: -.02em;
+  margin: 14px 0 0;
+}
+
+.sub {
+  margin: 18px 0 0;
+  font-size: 18px;
+  color: var(--ink-2);
+  max-width: 62ch;
+}
+
+.meta {
+  margin-top: 28px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--ink-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+}
+
+/* ---------- fila de stats ---------- */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  gap: 1px;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+  margin-top: 40px;
+}
+
+.stat { background: var(--surface); padding: 16px 14px; }
+.stat dt { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin: 0; }
+.stat dd {
+  margin: 6px 0 0;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+.stat dd small { font-size: 12px; font-weight: 400; color: var(--ink-3); display: block; margin-top: 3px; letter-spacing: 0; }
+
+/* ---------- secciones ---------- */
+
+section { padding-top: 72px; }
+
+.head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.head h2 {
+  font-family: "Archivo Black", ui-sans-serif, sans-serif;
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1.05;
+  letter-spacing: -.015em;
+}
+.head p { margin: 0; color: var(--ink-2); max-width: 64ch; }
+
+/* ---------- aviso ---------- */
+
+.notice {
+  margin-top: 32px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--bronze);
+  background: var(--surface);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.notice strong { font-size: 14px; }
+.notice p { margin: 0; font-size: 14px; color: var(--ink-2); }
+
+/* ---------- muros ---------- */
+
+.walls { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+
+.wall {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--rust);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.wall-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.wall-name { font-weight: 600; font-size: 17px; }
+.wall-lvl { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; font-size: 30px; font-weight: 600; line-height: 1; color: var(--rust); }
+.wall p { margin: 0; font-size: 13.5px; color: var(--ink-2); }
+
+.track { height: 6px; background: var(--track); position: relative; overflow: hidden; }
+.track i { position: absolute; inset: 0 auto 0 0; display: block; background: var(--rust); }
+.track.b i { background: var(--bronze); }
+.track.m i { background: var(--moss); }
+
+.scale { display: flex; justify-content: space-between; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+/* ---------- ahora ---------- */
+
+.now { display: flex; flex-direction: column; gap: 12px; }
+
+.now-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 20px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px 18px;
+  align-items: start;
+}
+.now-rank {
+  font-family: "Archivo Black", ui-sans-serif, sans-serif;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--bronze);
+  grid-row: span 2;
+}
+.now-title { font-weight: 600; font-size: 17px; }
+.now-cost {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  color: var(--ink-3);
+  text-align: right;
+  white-space: nowrap;
+  grid-row: span 2;
+}
+.now-item p { margin: 0; grid-column: 2; font-size: 14.5px; color: var(--ink-2); }
+
+.free {
+  color: var(--moss);
+  font-weight: 600;
+}
+
+/* ---------- fases ---------- */
+
+.phase { border-top: 1px solid var(--line); padding-top: 26px; margin-top: 34px; }
+.phase:first-of-type { border-top: 0; margin-top: 0; padding-top: 0; }
+
+.phase-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 4px; }
+.phase-n {
+  font-family: "Archivo Black", ui-sans-serif, sans-serif;
+  font-size: 15px;
+  color: var(--bronze);
+  letter-spacing: .02em;
+}
+.phase-head h3 { font-size: 21px; font-weight: 700; letter-spacing: -.01em; }
+.phase-when { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11.5px; color: var(--ink-3); }
+.phase > p { margin: 0 0 20px; color: var(--ink-2); font-size: 15px; max-width: 64ch; }
+
+/* ---------- puertas ---------- */
+
+.gate {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 22px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+
+.gate-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.gate-name { font-weight: 700; font-size: 19px; letter-spacing: -.01em; }
+.gate-gives { margin: 6px 0 0; font-size: 14.5px; color: var(--bronze-ink); }
+
+.pill {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 5px 9px;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+.pill.ready { color: var(--moss); background: var(--moss-wash); }
+.pill.close { color: var(--bronze); background: var(--bronze-wash); }
+.pill.far   { color: var(--rust);  background: var(--rust-wash); }
+
+.reqs { margin: 20px 0 0; display: flex; flex-direction: column; gap: 11px; }
+
+.req { display: grid; grid-template-columns: 116px 1fr 108px; gap: 12px; align-items: center; }
+.req-name { font-size: 13.5px; font-weight: 500; }
+.req-xp {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  color: var(--ink-3);
+  text-align: right;
+}
+.req-lvls { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11.5px; color: var(--ink-3); }
+
+.gate-total {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.gate-total span:first-child { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+.gate-total span:last-child { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; font-size: 17px; font-weight: 600; }
+
+.why { margin: 16px 0 0; font-size: 14.5px; color: var(--ink-2); }
+
+.quests { margin: 16px 0 0; font-size: 13px; color: var(--ink-3); }
+.quests b { color: var(--ink-2); font-weight: 600; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-family: "IBM Plex Mono", ui-monospace, monospace; display: block; margin-bottom: 5px; }
+
+.qlabel { color: var(--ink-2); font-weight: 600; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-family: "IBM Plex Mono", ui-monospace, monospace; margin: 18px 0 8px; }
+.qlist { display: flex; flex-wrap: wrap; gap: 6px; }
+.q {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11.5px;
+  padding: 4px 9px;
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+.q.done { color: var(--ink-3); background: var(--surface-2); border-color: var(--line-soft); }
+.q.done::before { content: "✓ "; color: var(--moss); font-weight: 600; }
+.q.todo { color: var(--rust); background: var(--rust-wash); border-color: var(--rust); }
+.q.chain { color: var(--bronze-ink); background: var(--bronze-wash); border-color: var(--bronze); }
+
+.flag {
+  margin-top: 16px;
+  padding: 12px 14px;
+  background: var(--bronze-wash);
+  border-left: 3px solid var(--bronze);
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+.flag strong { color: var(--ink); }
+
+/* ---------- barra de quest points ---------- */
+
+.qpbar { margin-top: 4px; }
+.qptrack { height: 10px; background: var(--track); position: relative; overflow: hidden; }
+.qptrack i { position: absolute; inset: 0 auto 0 0; display: block; background: var(--bronze); }
+.qpnums { display: flex; justify-content: space-between; margin-top: 6px; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.qpnums span:first-child { color: var(--bronze-ink); font-weight: 600; }
+.qpnums span:nth-child(2) { color: var(--rust); }
+
+/* ---------- diaries ---------- */
+
+.diaries { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); }
+.drow { background: var(--surface); padding: 12px 15px; display: flex; align-items: center; gap: 12px; }
+.dname { flex: 1; font-size: 14px; font-weight: 500; }
+.dcells { display: flex; gap: 3px; }
+.dcells i { width: 13px; height: 13px; background: var(--track); display: block; }
+.dcells i.on { background: var(--moss); }
+.dcount { font-size: 11.5px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.dlegend { margin: 10px 0 0; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; color: var(--ink-3); }
+.dlegend span { color: var(--ink-2); }
+
+/* ---------- tabla gp ---------- */
+
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 540px; }
+th, td { text-align: left; padding: 13px 16px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+thead th { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+tbody tr:last-child td { border-bottom: 0; }
+td.rate { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 600; color: var(--bronze-ink); }
+td.what { font-weight: 600; white-space: nowrap; }
+td.note { color: var(--ink-2); font-size: 14px; }
+.locked { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; color: var(--rust); display: block; margin-top: 4px; }
+
+/* ---------- términos ---------- */
+
+.t {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: help;
+  border-bottom: 1.5px dotted var(--bronze);
+  text-align: left;
+}
+.t:hover { color: var(--bronze-ink); }
+.t:focus-visible { outline: 2px solid var(--bronze); outline-offset: 2px; }
+
+#pop {
+  position: fixed;
+  z-index: 60;
+  max-width: 330px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--bronze);
+  box-shadow: 0 12px 40px rgba(0,0,0,.22);
+  padding: 15px 17px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  display: none;
+}
+#pop.on { display: block; }
+#pop b { display: block; color: var(--ink); font-size: 15px; margin-bottom: 5px; }
+
+/* ---------- glosario ---------- */
+
+.gloss { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); }
+.gterm { background: var(--surface); padding: 15px 17px; }
+.gterm dt { font-weight: 600; font-size: 14.5px; margin: 0; }
+.gterm dd { margin: 4px 0 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.5; }
+
+footer { margin-top: 80px; padding-top: 26px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-3); }
+footer p { margin: 0 0 8px; }
+
+@media (max-width: 620px) {
+  .req { grid-template-columns: 1fr; gap: 5px; }
+  .req-xp { text-align: left; }
+  .now-item { grid-template-columns: auto 1fr; }
+  .now-cost { grid-row: auto; grid-column: 2; text-align: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Cuenta · Leo Glez · 26 agosto 2026</p>
+  <h1>Tablero de<br>Vorkath</h1>
+  <p class="sub">Dónde estás, qué te bloquea y qué sigue. Cada nombre subrayado se puede tocar: te dice qué es, sin que tengas que buscarlo.</p>
+  <p class="meta">
+    <span>Datos en vivo de TempleOSRS</span>
+    <span>·</span>
+    <span>Meta: autosuficiencia en GP + bossear con amigos</span>
+  </p>
+
+  <dl class="stats">
+    <div class="stat"><dt>Combat</dt><dd>92</dd></div>
+    <div class="stat"><dt>Total</dt><dd>1520</dd></div>
+    <div class="stat"><dt>XP</dt><dd>27.7<small>millones</small></dd></div>
+    <div class="stat"><dt><button class="t" data-t="ehb">EHB</button></dt><dd>0.01<small>nunca has bosseado</small></dd></div>
+    <div class="stat"><dt>Quests</dt><dd>76<small>de 182</small></dd></div>
+    <div class="stat"><dt><button class="t" data-t="qp">Quest points</button></dt><dd>148<small>200 para DS2</small></dd></div>
+    <div class="stat"><dt><button class="t" data-t="diary">Diaries</button></dt><dd>9<small>de 48 niveles</small></dd></div>
+  </dl>
+</header>
+
+<section>
+  <div class="head">
+    <p class="eyebrow">El diagnóstico</p>
+    <h2>Cuenta de constructor sin motor de combate</h2>
+    <p>13 de tus 27.7 millones de XP están en <button class="t" data-t="construction">Construction</button>. Tu <button class="t" data-t="ehb">EHB</button> de 0.01 dice que nunca has bosseado de verdad. Y traes <button class="t" data-t="prayer">Prayer</button> 87 con <button class="t" data-t="defence">Defence</button> 70 — o sea que <button class="t" data-t="piety">Piety</button> ya está pagada y probablemente sin usar.</p>
+  </div>
+
+  <div class="notice">
+    <strong>Te faltan 52 <button class="t" data-t="qp">quest points</button> para Vorkath</strong>
+    <p>Tienes <strong>148</strong> y <button class="t" data-t="ds2">Dragon Slayer II</button> pide <strong>200</strong>. Es el único requisito de toda la ruta que no se resuelve entrenando: hay que hacer quests, salgan en la lista de la ruta o no. La buena noticia es que las quests que ya necesitas para las otras puertas también suman.</p>
+  </div>
+</section>
+
+<section>
+  <div class="head">
+    <p class="eyebrow">Los tres muros</p>
+    <h2>Todo lo que quieres pasa por estos tres</h2>
+    <p>No son los niveles más bajos de tu cuenta, son los que aparecen una y otra vez como requisito. Mientras sigan abajo, la ruta entera está trabada.</p>
+  </div>
+
+  <div class="walls">
+    <div class="wall">
+      <div class="wall-top"><span class="wall-name"><button class="t" data-t="slayer">Slayer</button></span><span class="wall-lvl num">54</span></div>
+      <div class="track"><i style="width:54%"></i></div>
+      <div class="scale"><span>ahora 54</span><span>necesitas 70</span></div>
+      <p>Bloquea a <button class="t" data-t="duradel">Duradel</button> y <button class="t" data-t="mm2">Monkey Madness II</button>. Es además el único entrenamiento que sube cinco stats de combate a la vez <em>y</em> te paga.</p>
+    </div>
+
+    <div class="wall">
+      <div class="wall-top"><span class="wall-name"><button class="t" data-t="agility">Agility</button></span><span class="wall-lvl num">53</span></div>
+      <div class="track"><i style="width:53%"></i></div>
+      <div class="scale"><span>ahora 53</span><span>necesitas 70</span></div>
+      <p>El que más veces aparece: lo piden <button class="t" data-t="bcs">Beneath Cursed Sands</button>, <button class="t" data-t="mm2">MM2</button>, <button class="t" data-t="ds2">Dragon Slayer II</button> y <button class="t" data-t="sote">Song of the Elves</button>. Cuatro puertas, un solo muro.</p>
+    </div>
+
+    <div class="wall">
+      <div class="wall-top"><span class="wall-name"><button class="t" data-t="herblore">Herblore</button></span><span class="wall-lvl num">57</span></div>
+      <div class="track"><i style="width:57%"></i></div>
+      <div class="scale"><span>ahora 57</span><span>necesitas 81</span></div>
+      <p>El que decide si el PvM te cuesta o te paga. Sin él compras pociones toda la vida; con él tu <button class="t" data-t="farming">Farming</button> 72 te las fabrica.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="head">
+    <p class="eyebrow">Esta semana</p>
+    <h2>Lo más barato que tienes enfrente</h2>
+    <p>Este orden cambió al leer tus quests. Antes parecía que el Sepulchre era lo segundo más barato; resultó ser lo tercero.</p>
+  </div>
+
+  <div class="now">
+    <div class="now-item">
+      <span class="now-rank">1</span>
+      <span class="now-title"><button class="t" data-t="piety">Piety</button></span>
+      <span class="now-cost free">0 XP<br><span style="color:var(--ink-3)">2 quests</span></span>
+      <p>Confirmado: <button class="t" data-t="kingsransom">King's Ransom</button> no está empezada. Ya calificas con los stats que tienes, así que son dos quests y nada más. <strong>+23% Strength</strong> por un rato de trabajo.</p>
+    </div>
+
+    <div class="now-item">
+      <span class="now-rank">2</span>
+      <span class="now-title"><button class="t" data-t="toa">Tombs of Amascut</button></span>
+      <span class="now-cost">195,473 XP<br><span style="color:var(--ink-3)">2 quests</span></span>
+      <p>Ya llevas la mitad de las quests. Faltan <button class="t" data-t="agility">Agility</button> 53→62, más Icthlarin's Little Helper y Contact!. Esto es, literalmente, bossear con amigos.</p>
+    </div>
+
+    <div class="now-item">
+      <span class="now-rank">3</span>
+      <span class="now-title"><button class="t" data-t="sepulchre">Hallowed Sepulchre</button></span>
+      <span class="now-cost">106,910 XP<br><span style="color:var(--ink-3)">4 quests</span></span>
+      <p>El XP es poco —<button class="t" data-t="fletching">Fletching</button> 55→60— pero faltan cuatro quests de la cadena de vampiros. Bajó al tercer lugar por eso.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="head">
+    <p class="eyebrow">La ruta</p>
+    <h2>Cinco fases</h2>
+    <p>Los tiempos asumen 8 horas por semana. Van en orden porque cada una habilita la siguiente.</p>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><span class="phase-n">FASE 1</span><h3>Cimientos</h3><span class="phase-when">esta semana</span></div>
+    <p>Cobrar lo que ya te ganaste y no estás usando.</p>
+
+    <article class="gate">
+      <div class="gate-head">
+        <div>
+          <div class="gate-name"><button class="t" data-t="piety">Piety</button></div>
+          <p class="gate-gives">+23% Strength · +20% Attack · +25% Defence</p>
+        </div>
+        <span class="pill ready">Sin XP pendiente</span>
+      </div>
+      <p class="qlabel">Quests · faltan 2</p>
+      <div class="qlist">
+        <span class="q todo">King's Ransom</span>
+        <span class="q todo">Knight Waves Training Grounds</span>
+      </div>
+      <p class="why">Tienes 87 Prayer y 70 Defence: Piety ya es tuya en niveles. Confirmado con tus datos — <button class="t" data-t="kingsransom">King's Ransom</button> no está ni empezada, y <button class="t" data-t="knightwaves">Knight Waves</button> se abre solo después de ella, así que van en ese orden. Sigue siendo el mayor salto de daño gratis de toda la cuenta.</p>
+    </article>
+
+    <article class="gate">
+      <div class="gate-head">
+        <div>
+          <div class="gate-name"><button class="t" data-t="sotf">Sins of the Father</button></div>
+          <p class="gate-gives"><button class="t" data-t="sepulchre">Hallowed Sepulchre</button> · <button class="t" data-t="darkmeyer">Darkmeyer</button> · <button class="t" data-t="flail">Blisterwood flail</button></p>
+        </div>
+        <span class="pill far">1 skill + 4 quests</span>
+      </div>
+      <div class="reqs">
+        <div class="req">
+          <span class="req-name"><button class="t" data-t="fletching">Fletching</button> <span class="req-lvls">55→60</span></span>
+          <span class="track b"><i style="width:2%"></i></span>
+          <span class="req-xp">106,910 XP</span>
+        </div>
+      </div>
+      <div class="gate-total"><span>Total</span><span>106,910 XP</span></div>
+      <p class="qlabel">Quests · llevas 4 de 8</p>
+      <div class="qlist">
+        <span class="q done">Priest in Peril</span>
+        <span class="q done">The Restless Ghost</span>
+        <span class="q done">Nature Spirit</span>
+        <span class="q done">Vampyre Slayer</span>
+        <span class="q todo">In Search of the Myreque</span>
+        <span class="q todo">In Aid of the Myreque</span>
+        <span class="q todo">Darkness of Hallowvale</span>
+        <span class="q todo">A Taste of Hope</span>
+      </div>
+      <div class="flag"><strong>Esto salió más caro de lo que parecía.</strong> Antes de tener tus datos, esta puerta se veía a 40 minutos de Fletching. Las cuatro que faltan son la cadena de vampiros de Morytania, y van en ese orden: cada una desbloquea la siguiente. Es la parte más larga de la fase 1.</div>
+      <p class="why">Aun así vale la pena: el Sepulchre entrena Agility <em>y</em> paga. Es el único método que ataca tus dos cuellos de botella al mismo tiempo.</p>
+    </article>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><span class="phase-n">FASE 2</span><h3>Bossear con amigos</h3><span class="phase-when">semanas 2–4</span></div>
+    <p>La fase que contesta literalmente lo que pediste.</p>
+
+    <article class="gate">
+      <div class="gate-head">
+        <div>
+          <div class="gate-name"><button class="t" data-t="bcs">Beneath Cursed Sands</button></div>
+          <p class="gate-gives"><button class="t" data-t="toa">Tombs of Amascut</button> — la <button class="t" data-t="raid">raid</button> escalable</p>
+        </div>
+        <span class="pill close">1 skill + 2 quests</span>
+      </div>
+      <div class="reqs">
+        <div class="req">
+          <span class="req-name"><button class="t" data-t="agility">Agility</button> <span class="req-lvls">53→62</span></span>
+          <span class="track b"><i style="width:2%"></i></span>
+          <span class="req-xp">195,473 XP</span>
+        </div>
+      </div>
+      <div class="gate-total"><span>Total</span><span>195,473 XP</span></div>
+      <p class="qlabel">Quests · llevas 2 de 4</p>
+      <div class="qlist">
+        <span class="q done">Prince Ali Rescue</span>
+        <span class="q done">Gertrude's Cat</span>
+        <span class="q todo">Icthlarin's Little Helper</span>
+        <span class="q todo">Contact!</span>
+      </div>
+      <p class="why">ToA escala con <button class="t" data-t="invocations">invocations</button>: en <button class="t" data-t="entrymode">Entry Mode</button> tus amigos te pueden llevar con combat 92 sin que seas un lastre.</p>
+    </article>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><span class="phase-n">FASE 3</span><h3>El motor</h3><span class="phase-when">meses 2–4</span></div>
+    <p>Donde la cuenta empieza a pagarse sola.</p>
+
+    <article class="gate">
+      <div class="gate-head">
+        <div>
+          <div class="gate-name"><button class="t" data-t="duradel">Duradel</button></div>
+          <p class="gate-gives">Tasks de alto nivel — el motor real de GP y XP</p>
+        </div>
+        <span class="pill close">Solo combat</span>
+      </div>
+      <div class="reqs">
+        <div class="req">
+          <span class="req-name">Combat <span class="req-lvls">92→100</span></span>
+          <span class="track b"><i style="width:12%"></i></span>
+          <span class="req-xp">8 niveles</span>
+        </div>
+      </div>
+      <p class="qlabel">Quests · completas</p>
+      <div class="qlist">
+        <span class="q done">Shilo Village</span>
+      </div>
+      <p class="why">Con Attack, Strength y Defence en 80 llegas a combat 102. <button class="t" data-t="nieve">Nieve</button> está bien por ahora, pero Duradel es el que paga.</p>
+    </article>
+
+    <article class="gate">
+      <div class="gate-head">
+        <div>
+          <div class="gate-name"><button class="t" data-t="mm2">Monkey Madness II</button></div>
+          <p class="gate-gives"><button class="t" data-t="gorillas">Demonic gorillas</button> · <button class="t" data-t="ballista">heavy ballista</button></p>
+        </div>
+        <span class="pill far">4 skills + 2 quests</span>
+      </div>
+      <div class="reqs">
+        <div class="req"><span class="req-name"><button class="t" data-t="slayer">Slayer</button> <span class="req-lvls">54→69</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">517,163 XP</span></div>
+        <div class="req"><span class="req-name"><button class="t" data-t="hunter">Hunter</button> <span class="req-lvls">33→60</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">254,622 XP</span></div>
+        <div class="req"><span class="req-name">Crafting <span class="req-lvls">66→70</span></span><span class="track b"><i style="width:10%"></i></span><span class="req-xp">216,289 XP</span></div>
+        <div class="req"><span class="req-name"><button class="t" data-t="agility">Agility</button> <span class="req-lvls">53→55</span></span><span class="track b"><i style="width:5%"></i></span><span class="req-xp">28,305 XP</span></div>
+      </div>
+      <div class="gate-total"><span>Total</span><span>1,016,379 XP</span></div>
+      <p class="qlabel">Quests · llevas 3 de 5</p>
+      <div class="qlist">
+        <span class="q done">Enlightened Journey</span>
+        <span class="q done">The Eyes of Glouphrie</span>
+        <span class="q done">Watchtower</span>
+        <span class="q todo">Troll Stronghold</span>
+        <span class="q todo">RFD — King Awowogei</span>
+      </div>
+      <p class="why">Regala 80k de Slayer, 60k de Agility, 50k de Thieving y 50k de Hunter. Cuatro skills que necesitas, de un jalón. De <button class="t" data-t="rfd">RFD</button> solo necesitas el capítulo del rey mono, no la quest completa.</p>
+    </article>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><span class="phase-n">FASE 4</span><h3>El bloque de los 70</h3><span class="phase-when">meses 4–7</span></div>
+    <p>Cinco skills a 70 abren tu estrella polar.</p>
+
+    <article class="gate">
+      <div class="gate-head">
+        <div>
+          <div class="gate-name"><button class="t" data-t="sote">Song of the Elves</button></div>
+          <p class="gate-gives"><button class="t" data-t="prifddinas">Prifddinas</button> · <button class="t" data-t="gauntlet">Gauntlet</button> · <button class="t" data-t="zalcano">Zalcano</button></p>
+        </div>
+        <span class="pill far">5 skills + 4 quests</span>
+      </div>
+      <div class="reqs">
+        <div class="req"><span class="req-name"><button class="t" data-t="hunter">Hunter</button> <span class="req-lvls">33→70</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">718,507 XP</span></div>
+        <div class="req"><span class="req-name"><button class="t" data-t="agility">Agility</button> <span class="req-lvls">53→70</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">599,296 XP</span></div>
+        <div class="req"><span class="req-name">Smithing <span class="req-lvls">55→70</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">569,201 XP</span></div>
+        <div class="req"><span class="req-name"><button class="t" data-t="herblore">Herblore</button> <span class="req-lvls">57→70</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">530,681 XP</span></div>
+        <div class="req"><span class="req-name">Mining <span class="req-lvls">60→70</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">460,437 XP</span></div>
+      </div>
+      <div class="gate-total"><span>Total</span><span>2,878,122 XP</span></div>
+      <p class="qlabel">Quests · llevas 2 de 3 directas, pero…</p>
+      <div class="qlist">
+        <span class="q done">Making History</span>
+        <span class="q done">Druidic Ritual</span>
+        <span class="q todo">Mourning's End Part II</span>
+      </div>
+      <p class="qlabel">…y la cadena que Mourning's End exige antes</p>
+      <div class="qlist">
+        <span class="q chain">Regicide</span>
+        <span class="q chain">Roving Elves</span>
+        <span class="q chain">Mourning's End Part I</span>
+      </div>
+      <div class="flag"><strong>Está más lejos de lo que dice la lista.</strong> "Mourning's End Part II" se ve como una sola quest, pero ninguna de las tres de arriba está empezada, y son obligatorias antes. Es la puerta más cara de toda la ruta en quests <em>y</em> en XP.</div>
+      <p class="why">Aun así es tu estrella polar. Aprovecha tu 99 de Construction y tu 72 de Farming, y el Gauntlet es <em>el</em> mejor money maker para combat 80–95 en 2026.</p>
+    </article>
+
+    <article class="gate">
+      <div class="gate-head">
+        <div>
+          <div class="gate-name"><button class="t" data-t="supercombat">Super combat potions</button> y <button class="t" data-t="brews">Saradomin brews</button></div>
+          <p class="gate-gives">Dejas de comprar suministros — tu Farming los alimenta</p>
+        </div>
+        <span class="pill far">Herblore</span>
+      </div>
+      <div class="reqs">
+        <div class="req"><span class="req-name"><button class="t" data-t="herblore">Herblore</button> <span class="req-lvls">57→78</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">1,422,254 XP</span></div>
+        <div class="req"><span class="req-name"><button class="t" data-t="herblore">Herblore</button> <span class="req-lvls">57→81</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">1,985,872 XP</span></div>
+      </div>
+      <p class="why">Mientras compres suministros, el PvM te cuesta en vez de pagarte. Este es el interruptor que lo voltea.</p>
+    </article>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><span class="phase-n">FASE 5</span><h3>Vorkath</h3><span class="phase-when">meses 7–10</span></div>
+    <p>Autosuficiencia total.</p>
+
+    <article class="gate">
+      <div class="gate-head">
+        <div>
+          <div class="gate-name"><button class="t" data-t="ds2">Dragon Slayer II</button></div>
+          <p class="gate-gives"><button class="t" data-t="vorkath">Vorkath</button> · Myths' Guild · <button class="t" data-t="antifire">super antifires</button></p>
+        </div>
+        <span class="pill far">5 skills · 4 quests · 52 QP</span>
+      </div>
+      <div class="reqs">
+        <div class="req"><span class="req-name">Smithing <span class="req-lvls">55→70</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">569,201 XP</span></div>
+        <div class="req"><span class="req-name">Magic <span class="req-lvls">70→75</span></span><span class="track b"><i style="width:5%"></i></span><span class="req-xp">455,082 XP</span></div>
+        <div class="req"><span class="req-name">Mining <span class="req-lvls">60→68</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">327,842 XP</span></div>
+        <div class="req"><span class="req-name"><button class="t" data-t="agility">Agility</button> <span class="req-lvls">53→60</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">135,411 XP</span></div>
+        <div class="req"><span class="req-name">Thieving <span class="req-lvls">57→60</span></span><span class="track b"><i style="width:20%"></i></span><span class="req-xp">56,054 XP</span></div>
+      </div>
+      <div class="gate-total"><span>Total</span><span>1,543,590 XP</span></div>
+      <p class="qlabel">Quests · llevas 3 de 7</p>
+      <div class="qlist">
+        <span class="q done">Animal Magnetism</span>
+        <span class="q done">Ghosts Ahoy</span>
+        <span class="q done">Client of Kourend</span>
+        <span class="q todo">Legends' Quest</span>
+        <span class="q todo">Dream Mentor</span>
+        <span class="q todo">A Tail of Two Cats</span>
+        <span class="q todo">Bone Voyage</span>
+      </div>
+      <p class="qlabel">Quest points</p>
+      <div class="qpbar">
+        <div class="qptrack"><i style="width:74%"></i></div>
+        <div class="qpnums"><span class="num">148 ahora</span><span class="num">faltan 52</span><span class="num">200</span></div>
+      </div>
+      <p class="why">Ese es el requisito que manda en esta puerta. Las cuatro quests de arriba te acercan, pero no alcanzan solas: para juntar 52 puntos vas a tener que hacer quests fuera de esta lista. Con eso en mente, conviene ir haciéndolas desde ahora en vez de dejarlo para el final.</p>
+    </article>
+
+    <article class="gate">
+      <div class="gate-head">
+        <div>
+          <div class="gate-name"><button class="t" data-t="zulrah">Zulrah</button></div>
+          <p class="gate-gives">~1.8M gp/hr, sin depender de nadie</p>
+        </div>
+        <span class="pill far">2 skills</span>
+      </div>
+      <div class="reqs">
+        <div class="req"><span class="req-name">Magic <span class="req-lvls">70→85</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">2,503,255 XP</span></div>
+        <div class="req"><span class="req-name">Ranged <span class="req-lvls">70→80</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">1,247,364 XP</span></div>
+      </div>
+      <div class="gate-total"><span>Total</span><span>3,750,619 XP</span></div>
+      <p class="qlabel">Quests · falta 1</p>
+      <div class="qlist">
+        <span class="q todo">Regicide</span>
+      </div>
+      <div class="flag">Regicide también es el primer eslabón de la cadena élfica que pide <button class="t" data-t="sote">Song of the Elves</button>. Hacerla una vez sirve para las dos puertas.</div>
+      <p class="why">El boss solo clásico del mid-game. Tiene curva de aprendizaje real, pero es dinero constante que no depende de que tus amigos estén conectados.</p>
+    </article>
+
+    <article class="gate">
+      <div class="gate-head">
+        <div>
+          <div class="gate-name"><button class="t" data-t="vorkath">Vorkath</button></div>
+          <p class="gate-gives">~4M gp/hr con <button class="t" data-t="dhl">Dragon hunter lance</button></p>
+        </div>
+        <span class="pill far">El destino</span>
+      </div>
+      <div class="reqs">
+        <div class="req"><span class="req-name">Attack <span class="req-lvls">70→90</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">4,595,771 XP</span></div>
+        <div class="req"><span class="req-name"><button class="t" data-t="defence">Defence</button> <span class="req-lvls">70→85</span></span><span class="track b"><i style="width:2%"></i></span><span class="req-xp">2,494,927 XP</span></div>
+      </div>
+      <div class="gate-total"><span>Total</span><span>7,090,698 XP</span></div>
+      <p class="why">El destino final de esta ruta. Aquí ya no dependes de nadie para nada.</p>
+    </article>
+  </div>
+</section>
+
+<section>
+  <div class="head">
+    <p class="eyebrow">Achievement diaries</p>
+    <h2>9 niveles de 48</h2>
+    <p>Cada región tiene cuatro niveles de retos. Completarlos da recompensas permanentes: teletransportes, mejores tasas de recolección, atajos. No están en la ruta, pero varias cosas de la ruta las asumen.</p>
+  </div>
+
+  <div class="diaries">
+    <div class="drow"><span class="dname">Karamja</span><span class="dcells"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="dcount num">3/4</span></div>
+    <div class="drow"><span class="dname">Varrock</span><span class="dcells"><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="dcount num">2/4</span></div>
+    <div class="drow"><span class="dname">Ardougne</span><span class="dcells"><i class="on"></i><i></i><i></i><i></i></span><span class="dcount num">1/4</span></div>
+    <div class="drow"><span class="dname">Falador</span><span class="dcells"><i class="on"></i><i></i><i></i><i></i></span><span class="dcount num">1/4</span></div>
+    <div class="drow"><span class="dname">Kandarin</span><span class="dcells"><i class="on"></i><i></i><i></i><i></i></span><span class="dcount num">1/4</span></div>
+    <div class="drow"><span class="dname">Lumbridge</span><span class="dcells"><i class="on"></i><i></i><i></i><i></i></span><span class="dcount num">1/4</span></div>
+    <div class="drow"><span class="dname">Desert</span><span class="dcells"><i></i><i></i><i></i><i></i></span><span class="dcount num">0/4</span></div>
+    <div class="drow"><span class="dname">Fremennik</span><span class="dcells"><i></i><i></i><i></i><i></i></span><span class="dcount num">0/4</span></div>
+    <div class="drow"><span class="dname">Kourend</span><span class="dcells"><i></i><i></i><i></i><i></i></span><span class="dcount num">0/4</span></div>
+    <div class="drow"><span class="dname">Morytania</span><span class="dcells"><i></i><i></i><i></i><i></i></span><span class="dcount num">0/4</span></div>
+    <div class="drow"><span class="dname">Western</span><span class="dcells"><i></i><i></i><i></i><i></i></span><span class="dcount num">0/4</span></div>
+    <div class="drow"><span class="dname">Wilderness</span><span class="dcells"><i></i><i></i><i></i><i></i></span><span class="dcount num">0/4</span></div>
+  </div>
+  <p class="dlegend">Cada casilla es un nivel: <span>Easy · Medium · Hard · Elite</span></p>
+
+  <div class="flag"><strong>Una buena noticia que salió en los datos:</strong> ya tienes <button class="t" data-t="fairytale">Fairytale II</button> terminada, o sea que los <button class="t" data-t="fairyrings">fairy rings</button> ya son tuyos. Estaba anotada como pendiente en el plan viejo. Es la red de transporte más útil del juego y probablemente no la estás usando.</div>
+</section>
+
+<section>
+  <div class="head">
+    <p class="eyebrow">Dinero</p>
+    <h2>Lo que puedes generar hoy</h2>
+    <p>Sin desbloquear nada nuevo. <button class="t" data-t="gp">GP</button> es la moneda del juego.</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th>Método</th><th>Rinde</th><th>Por qué</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="what"><button class="t" data-t="herbrun">Herb runs</button></td>
+          <td class="rate">200–400k<br><span style="font-weight:400;color:var(--ink-3)">por 12 min</span></td>
+          <td class="note">Lo más rentable por minuto que existe para ti hoy. Dos o tres vueltas al día, tu Farming 72 ya las aguanta.</td>
+        </tr>
+        <tr>
+          <td class="what"><button class="t" data-t="barrows">Barrows</button></td>
+          <td class="rate">~750k/hr</td>
+          <td class="note">Ya llevas 7 cofres, así que no te es ajeno. Con Piety y un <button class="t" data-t="whip">whip</button> sube bastante.</td>
+        </tr>
+        <tr>
+          <td class="what"><button class="t" data-t="sarachnis">Sarachnis</button></td>
+          <td class="rate">~490k/hr</td>
+          <td class="note">Tu primer boss de verdad. Mecánicas simples, buen entrenamiento mental.</td>
+        </tr>
+        <tr>
+          <td class="what"><button class="t" data-t="slayer">Slayer</button> con <button class="t" data-t="nieve">Nieve</button></td>
+          <td class="rate">250–400k/hr</td>
+          <td class="note">El motor. Sube Attack, Strength, Defence, Ranged y Magic a la vez <em>y</em> paga.</td>
+        </tr>
+        <tr>
+          <td class="what">Cortar <button class="t" data-t="yew">yews</button></td>
+          <td class="rate">~370k/hr</td>
+          <td class="note">Semi-<button class="t" data-t="afk">AFK</button> de verdad. Para correr mientras diseñas.</td>
+        </tr>
+        <tr>
+          <td class="what"><button class="t" data-t="sepulchre">Hallowed Sepulchre</button></td>
+          <td class="rate">~150k/hr</td>
+          <td class="note">Más XP de Agility. <span class="locked">Bloqueado: falta Sins of the Father</span></td>
+        </tr>
+        <tr>
+          <td class="what"><button class="t" data-t="birdhouse">Birdhouse runs</button></td>
+          <td class="rate">~100k<br><span style="font-weight:400;color:var(--ink-3)">por 2 min</span></td>
+          <td class="note">Cada 50 minutos, XP de Hunter en automático. <span class="locked">Bloqueado: falta Bone Voyage</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="head">
+    <p class="eyebrow">Glosario</p>
+    <h2>Todo lo que aparece arriba</h2>
+    <p>Los mismos textos que salen al tocar un nombre subrayado, aquí juntos.</p>
+  </div>
+  <dl class="gloss" id="gloss"></dl>
+</section>
+
+<footer>
+  <p>Niveles y XP: en vivo de TempleOSRS. Quests y diaries: leídos del cliente del juego vía Tasks Tracker. 26 de agosto de 2026.</p>
+  <p>Todo lo de esta página es dato real de la cuenta. Las quests se cuentan como las cuenta el juego: 76 de 182, sin miniquests ni capítulos sueltos de Recipe for Disaster.</p>
+</footer>
+
+</div>
+
+<div id="pop" role="tooltip" aria-live="polite"></div>
+
+<script>
+const TERMS = {
+  ehb: ["EHB", "Efficient Hours Bossed, u horas eficientes de boss. Cuántas horas de pelear bosses equivalen los objetos que has conseguido. Un 0.01 significa, en la práctica, cero: es todo el diagnóstico en un solo número."],
+  clue: ["Clue scrolls", "Acertijos que sueltan los monstruos. Los sigues por el mapa y al final te dan un cofre con recompensas, a veces muy caras."],
+  barrows: ["Barrows", "Seis hermanos muertos enterrados en criptas. Los matas, resuelves un pequeño laberinto y saqueas un cofre. Es de los primeros sitios rentables para una cuenta media."],
+  construction: ["Construction", "La habilidad de construir tu propia casa. Es carísima de subir y la tienes en 99, que es el máximo: por eso tu cuenta tiene tanto XP y tan poco combate."],
+  prayer: ["Prayer", "Habilidad que te da rezos: efectos que enciendes y apagas y que consumen puntos. Los buenos suben tu daño o te protegen de un tipo de ataque."],
+  defence: ["Defence", "Qué tan difícil es que te peguen, y qué equipo puedes usar. Muchas armaduras buenas piden Defence alto."],
+  piety: ["Piety", "El rezo grande del mid-game: mientras lo tienes encendido, +23% Strength, +20% Attack y +25% Defence. Pide Prayer 70 y Defence 70 (ya los tienes) más dos quests. No cuesta XP: es dinero en la banca sin cobrar."],
+  qp: ["Quest points", "Puntos que te da cada quest al completarla. Algunas cosas grandes piden un total mínimo — Dragon Slayer II pide 200 — y eso no se puede apurar entrenando: hay que hacer quests."],
+  kingsransom: ["King's Ransom", "Quest en la que rescatas al rey Arturo. Su premio es el acceso al entrenamiento de abajo."],
+  knightwaves: ["Knight Waves Training Grounds", "Una mini-arena bajo Camelot donde peleas contra ocho caballeros de la mesa redonda, uno por uno. Ganar es lo que te entrega Piety. Es una miniquest: no da quest points."],
+  slayer: ["Slayer", "La habilidad de matar por encargo. Un maestro te asigna un monstruo y una cantidad; al terminar te da puntos y otra tarea. Muchos monstruos valiosos solo se pueden matar si los traes de tarea."],
+  agility: ["Agility", "Habilidad de correr obstáculos. Sube tu energía para correr y abre atajos por todo el mapa. Es famosa por ser lenta y aburrida, y por aparecer como requisito en todas partes."],
+  herblore: ["Herblore", "Fabricar pociones con hierbas. Es lo que decide si el PvM te cuesta dinero o te lo genera, porque las pociones buenas son caras de comprar."],
+  farming: ["Farming", "Plantar y cosechar. Funciona con el reloj real: plantas, te vas a hacer otra cosa, y vuelves cuando creció. Da mucho XP por muy poco tiempo sentado."],
+  fletching: ["Fletching", "Fabricar arcos y flechas. Es de las habilidades más rápidas de subir del juego."],
+  hunter: ["Hunter", "Atrapar animales con trampas. La tienes en 33, que es de lo más bajo de tu cuenta, y la piden dos puertas grandes."],
+  sotf: ["Sins of the Father", "\"Pecados del padre\", la quest final de la saga de vampiros de Morytania. Su premio es lo que importa: abre el Hallowed Sepulchre."],
+  sepulchre: ["Hallowed Sepulchre", "Un circuito de agilidad con trampas donde vas saqueando cofres contrarreloj. Es especial porque entrena Agility y te paga al mismo tiempo — el único método que ataca tus dos cuellos de botella a la vez."],
+  darkmeyer: ["Darkmeyer", "La ciudad de los vampiros. Se abre al terminar Sins of the Father y tiene tiendas y contenido propio."],
+  flail: ["Blisterwood flail", "Un arma hecha de madera especial, la mejor contra vampiros. Premio de Sins of the Father."],
+  bcs: ["Beneath Cursed Sands", "\"Bajo las arenas malditas\". Quest del desierto cuyo premio es la entrada a Tombs of Amascut."],
+  toa: ["Tombs of Amascut (ToA)", "Una raid ambientada en una tumba egipcia. Es la más amigable para empezar porque su dificultad se ajusta: tu grupo decide qué tan duro quiere que sea."],
+  raid: ["Raid", "Una mazmorra grande pensada para grupo, con varios jefes seguidos y recompensas mucho mejores que un boss suelto."],
+  invocations: ["Invocations", "Interruptores de dificultad que el grupo enciende antes de entrar a ToA. Más invocations, más difícil y mejores premios. Es lo que permite que un jugador nuevo entre con amigos experimentados."],
+  entrymode: ["Entry Mode", "El modo fácil de ToA. Los premios son menores, pero puedes entrar con combat 92 sin ser un lastre para el grupo."],
+  duradel: ["Duradel", "El maestro de Slayer de más alto nivel. Pide combat 100 y Slayer 50. Asigna tareas más difíciles, que son las que de verdad pagan."],
+  nieve: ["Nieve", "La maestra de Slayer apropiada para tu nivel actual. Está bien por ahora, pero Duradel es el que paga."],
+  mm2: ["Monkey Madness II (MM2)", "Quest larga de la saga de los monos. Es de las más rentables en XP: regala 80k de Slayer, 60k de Agility, 50k de Thieving y 50k de Hunter, justo las que necesitas."],
+  gorillas: ["Demonic gorillas", "Monstruos que se desbloquean con MM2. Sueltan los fragmentos con los que se hacen las joyas más caras del juego."],
+  ballista: ["Heavy ballista", "Un arma a distancia muy potente que se desbloquea con MM2."],
+  rfd: ["RFD (Recipe for Disaster)", "\"Receta para el desastre\", una quest partida en muchos capítulos independientes. Cada uno rescata a un personaje. Solo necesitas el del rey mono, Awowogei."],
+  sote: ["Song of the Elves (SotE)", "\"La canción de los elfos\". La quest más grande del juego, y tu estrella polar: abre la ciudad élfica y el mejor money maker para tu rango de combate."],
+  prifddinas: ["Prifddinas", "La ciudad de los elfos. Se abre con Song of the Elves y tiene contenido propio, incluidos el Gauntlet y Zalcano."],
+  gauntlet: ["Gauntlet", "Un desafío en solitario donde entras sin nada y tienes que fabricarte el equipo ahí dentro contrarreloj antes de pelear al jefe. En 2026 es el mejor money maker para combat 80–95."],
+  zalcano: ["Zalcano", "Un jefe de Prifddinas que se pelea en grupo. Da recursos y XP de minería y herrería."],
+  supercombat: ["Super combat potion", "Una poción que sube Attack, Strength y Defence de un solo trago. Es el estándar para pelear. Comprarlas todo el tiempo sale caro; con Herblore 78 te las haces tú."],
+  brews: ["Saradomin brew", "Poción que te cura mucho y sube tu defensa temporalmente. Es el suministro básico para sobrevivir en raids."],
+  ds2: ["Dragon Slayer II (DS2)", "La secuela de la quest más clásica del juego. Es larguísima y pide 200 quest points, pero su premio es Vorkath."],
+  vorkath: ["Vorkath", "Un dragón no muerto que se pelea en solitario, una y otra vez, sin depender de nadie. Da alrededor de 4 millones de GP por hora. Es el destino final de esta ruta."],
+  antifire: ["Super antifire", "Poción que te protege del aliento de fuego de los dragones. Sin ella, pelear dragones grandes es inviable."],
+  dhl: ["Dragon hunter lance", "Una lanza que pega mucho más fuerte contra dragones. Es el arma estándar para Vorkath."],
+  zulrah: ["Zulrah", "Una serpiente que cambia de color y de forma de atacar durante la pelea. Se aprende de memoria. Da cerca de 1.8M de GP por hora."],
+  herbrun: ["Herb run", "Una vuelta plantando hierbas en las parcelas repartidas por el mapa. Plantas, te vas, y vuelves 80 minutos después a cosechar. Doce minutos de trabajo real por vuelta."],
+  birdhouse: ["Birdhouse run", "Pones cuatro casitas para pájaros, te vas, y vuelves 50 minutos después. Dos minutos de trabajo y XP de Hunter en automático."],
+  sarachnis: ["Sarachnis", "Una araña gigante. Es de los bosses más sencillos y no pide equipo especial: el candidato natural para tu primer boss de verdad."],
+  yew: ["Yews", "Un tipo de árbol de nivel medio. Cortarlos es de las formas más tranquilas de ganar dinero: casi no requiere atención."],
+  afk: ["AFK", "Away From Keyboard, \"lejos del teclado\". Una actividad AFK es la que sigue produciendo aunque no estés viendo la pantalla."],
+  whip: ["Abyssal whip", "El látigo. Es el arma cuerpo a cuerpo estándar del mid-game y pide Attack 70, que ya tienes. Si no lo traes puesto, es de lo primero que deberías conseguir."],
+  gp: ["GP", "Gold pieces, las monedas de oro. La moneda del juego."],
+  diary: ["Achievement diary", "Una lista de retos por región — Varrock, Karamja, Kandarin y así — dividida en cuatro niveles: Easy, Medium, Hard y Elite. Completar un nivel entero da recompensas permanentes: teletransportes, mejores tasas al recolectar, atajos que te ahorran caminar."],
+  fairytale: ["Fairytale II - Cure a Queen", "Segunda parte de la saga de las hadas. Su premio de en medio es el acceso a los fairy rings, y ya la tienes terminada."],
+  fairyrings: ["Fairy rings", "Una red de anillos repartidos por todo el mundo. Escribes un código de tres letras y apareces en otro anillo. Es la forma más rápida de moverte a muchos sitios que de otro modo son una caminata larga."]
+};
+
+// glosario completo, generado de la misma fuente que los botones
+const gl = document.getElementById('gloss');
+Object.keys(TERMS).sort((a, b) => TERMS[a][0].localeCompare(TERMS[b][0], 'es')).forEach(k => {
+  const d = document.createElement('div');
+  d.className = 'gterm';
+  const dt = document.createElement('dt');
+  dt.textContent = TERMS[k][0];
+  const dd = document.createElement('dd');
+  dd.textContent = TERMS[k][1];
+  d.append(dt, dd);
+  gl.append(d);
+});
+
+// popover
+const pop = document.getElementById('pop');
+let open = null;
+
+function hide() {
+  pop.classList.remove('on');
+  if (open) { open.setAttribute('aria-expanded', 'false'); open = null; }
+}
+
+function show(btn) {
+  const entry = TERMS[btn.dataset.t];
+  if (!entry) return;
+  pop.innerHTML = '';
+  const b = document.createElement('b');
+  b.textContent = entry[0];
+  const s = document.createElement('span');
+  s.textContent = entry[1];
+  pop.append(b, s);
+  pop.classList.add('on');
+
+  const r = btn.getBoundingClientRect();
+  const pr = pop.getBoundingClientRect();
+  let left = r.left;
+  if (left + pr.width > window.innerWidth - 12) left = window.innerWidth - pr.width - 12;
+  if (left < 12) left = 12;
+  let top = r.bottom + 8;
+  if (top + pr.height > window.innerHeight - 12) top = Math.max(12, r.top - pr.height - 8);
+  pop.style.left = left + 'px';
+  pop.style.top = top + 'px';
+
+  btn.setAttribute('aria-expanded', 'true');
+  open = btn;
+}
+
+document.querySelectorAll('.t').forEach(btn => {
+  btn.setAttribute('aria-expanded', 'false');
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (open === btn) { hide(); return; }
+    hide();
+    show(btn);
+  });
+});
+
+document.addEventListener('click', hide);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') hide(); });
+window.addEventListener('resize', hide);
+window.addEventListener('scroll', hide, { passive: true });
+</script>
