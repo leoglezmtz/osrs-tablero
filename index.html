@@ -705,7 +705,7 @@ footer p { margin: 0 0 7px; }
     <div class="stat"><dt>Total</dt><dd>1520</dd></div>
     <div class="stat"><dt>XP</dt><dd>27.7<small>millones</small></dd></div>
     <div class="stat"><dt><button class="t" data-t="ehb">EHB</button></dt><dd>0.01<small>nunca has bosseado</small></dd></div>
-    <div class="stat"><dt>Quests</dt><dd>76<small>de 182</small></dd></div>
+    <div class="stat"><dt>Quests</dt><dd>77<small>de 182</small></dd></div>
     <div class="stat"><dt><button class="t" data-t="qp">Quest points</button></dt><dd>148<small>200 para DS2</small></dd></div>
     <div class="stat"><dt><button class="t" data-t="diary">Diaries</button></dt><dd>9<small>de 48 niveles</small></dd></div>
   </dl>
@@ -744,6 +744,7 @@ footer p { margin: 0 0 7px; }
       <div class="track"><i style="width:53%"></i></div>
       <div class="scale"><span>ahora 53</span><span>necesitas 70</span></div>
       <p>El que más veces aparece: lo piden <button class="t" data-t="bcs">Beneath Cursed Sands</button>, <button class="t" data-t="mm2">MM2</button>, <button class="t" data-t="ds2">Dragon Slayer II</button> y <button class="t" data-t="sote">Song of the Elves</button>. Cuatro puertas, un solo muro.</p>
+      <div class="flag" style="margin-top:0"><strong>Mete aquí tus dos lámparas.</strong> Son 20,000 XP y te ahorran cerca de hora y media de la parte más aburrida del juego. Agility es tu muro más repetido, es el más lento de subir y no te paga nada mientras lo haces: es exactamente donde más valen.</div>
     </div>
 
     <div class="wall">
@@ -835,6 +836,7 @@ footer p { margin: 0 0 7px; }
     <div class="tiene"><b>Combat bracelet → Warriors' Guild</b><span>Ahí se consigue el <button class="t" data-t="defender">dragon defender</button>, para el que ya calificas y no has ido por él. Es de lo primero de la fase 1.</span></div>
     <div class="tiene"><b>Skills necklace → Farming Guild</b><span>Tus <button class="t" data-t="herbrun">herb runs</button> son tu mejor fuente de dinero hoy. Este teletransporte les quita el viaje más largo.</span></div>
     <div class="tiene"><b>Games necklace → Barbarian Outpost</b><span>Te deja en la pista de <button class="t" data-t="agility">Agility</button> de los bárbaros. Agility es uno de tus tres muros.</span></div>
+    <div class="tiene" style="border-left-color:var(--gold)"><b>Planeador de Feldip Hills</b><span>Recién desbloqueado por One Small Favour. Te acerca al sur del mapa, por donde pasa Monkey Madness II más adelante.</span></div>
     <div class="tiene"><b>Ring of Dueling → Ferox Enclave</b><span>Banco y restauración gratis de vida, oración y stats. Es el punto de partida estándar para salir a bossear.</span></div>
   </div>
 
@@ -860,13 +862,13 @@ footer p { margin: 0 0 7px; }
         </div>
         <span class="pill ready">Sin XP pendiente</span>
       </div>
-      <p class="qlabel">Quests · faltan 3, y van en este orden · tócalas</p>
+      <p class="qlabel">Quests · faltan 2, y van en este orden · tócalas</p>
       <div class="qlist">
-        <button class="q todo t" data-t="osf" type="button">1 · One Small Favour</button>
-        <button class="q todo t" data-t="kingsransom" type="button">2 · King's Ransom</button>
-        <button class="q todo t" data-t="knightwaves" type="button">3 · Knight Waves</button>
+        <span class="q done">One Small Favour</span>
+        <button class="q todo t" data-t="kingsransom" type="button">1 · King's Ransom</button>
+        <button class="q todo t" data-t="knightwaves" type="button">2 · Knight Waves</button>
       </div>
-      <div class="flag"><strong>Hay un escalón escondido.</strong> Ninguna guía de Piety menciona <button class="t" data-t="osf">One Small Favour</button>, pero King's Ransom la exige. Lo verifiqué en el código de Quest Helper, no de memoria. Es la parte larga de las tres — y la buena noticia es que sus propios requisitos (Druidic Ritual, Rune Mysteries, Shilo Village) ya los tienes, así que puedes empezarla ahora mismo.</div>
+      <div class="flag"><strong>One Small Favour: hecha.</strong> Era el escalón escondido — ninguna guía de Piety la menciona, pero King's Ransom la exigía. Ya está fuera del camino, y de paso te dejó 2 quest points, dos <button class="t" data-t="lampara">lámparas antiguas</button> y acceso al planeador de Feldip Hills.</div>
       <p class="why">Tienes 87 Prayer y 70 Defence: en niveles Piety ya es tuya, no hace falta un solo punto de XP. Es el mayor salto de daño gratis de toda la cuenta.</p>
     </article>
 
@@ -1222,8 +1224,9 @@ const TERMS = {
   defence: ["Defence", "Qué tan difícil es que te peguen, y qué equipo puedes usar. Muchas armaduras buenas piden Defence alto."],
   piety: ["Piety", "El rezo grande del mid-game: mientras lo tienes encendido, +23% Strength, +20% Attack y +25% Defence. Pide Prayer 70 y Defence 70 (ya los tienes) más dos quests. No cuesta XP: es dinero en la banca sin cobrar."],
   qp: ["Quest points", "Puntos que te da cada quest al completarla. Algunas cosas grandes piden un total mínimo — Dragon Slayer II pide 200 — y eso no se puede apurar entrenando: hay que hacer quests."],
-  kingsransom: ["King's Ransom", "EMPIEZA: habla con Sir Kay en el castillo de Camelot, al norte de Seers' Village. QUE ES: rescatas al rey Arturo. EXIGE: One Small Favour (la que te falta), mas Black Knights' Fortress, Holy Grail y Murder Mystery, que ya tienes. Pide Defence 65 y Magic 45; tienes 70 en ambos. PREMIO: acceso al entrenamiento de los caballeros, que es donde se consigue Piety."],
+  kingsransom: ["King's Ransom", "EMPIEZA: habla con el Gossip afuera de Sinclair Mansion, al noroeste del castillo de Camelot. No con Sir Kay. LLEVA COMPRADO DEL GRAND EXCHANGE: el set de armadura negra completo (full helm, platebody y platelegs o plateskirt), un bronze med helm, un iron chainbody, granito de cualquier tamano, y 1 runa de aire con 1 de ley para Telekinetic Grab. OJO: aunque ya traigas el animate rock scroll de One Small Favour, tienes que hablar otra vez con Wizard Cromperty en Ardougne durante la quest o el hechizo no te va a funcionar, y vas a tener que regresar. REQUISITOS: Defence 65 y Magic 45, tienes 70 en ambos, y no hay nada que matar."],
   osf: ["One Small Favour", "EMPIEZA: habla con Yanni Salika en Shilo Village, en su tienda de antiguedades al norte del rio. COMO LLEGAR: fairy ring codigo CKR y caminas al sur. LLEVA: pickaxe, chisel, y forma de llegar a Port Sarim. QUE ES: una cadena de favores donde cada persona a la que ayudas te manda con otra. Larga y famosa por dar vueltas, pero no es dificil y no pide combate. Cumples todos sus requisitos: Agility 36, Crafting 25, Herblore 18 y Smithing 30, mas Rune Mysteries, Shilo Village, Jungle Potion y Druidic Ritual."],
+  lampara: ["Lampara antigua", "Un premio de quest que canjeas por 10,000 puntos de XP en la habilidad que tu elijas, siempre que la tengas en nivel 30 o mas. One Small Favour te dio dos, o sea 20,000 XP para donde quieras. No caducan: puedes guardarlas."],
   zanaris: ["Zanaris", "La ciudad oculta de las hadas. Es el centro de la red de fairy rings: desde ahi se llega a cualquier otro anillo, y tiene banco, tienda y un mercado propio."],
   canifis: ["Canifis", "Pueblo de hombres lobo al este de Morytania. Es la puerta de entrada a toda esa region, y de ahi arranca la cadena de quests de vampiros que te falta para el Hallowed Sepulchre."],
   nexus: ["Portal Nexus", "Un pedestal en tu casa que guarda varios teletransportes de ciudad y los usa sin gastar runas de tu mochila. El tuyo tiene ocho: Varrock, Grand Exchange, Falador, Ardougne, Camelot, Draynor Manor, Lumbridge y Kourend Castle."],
